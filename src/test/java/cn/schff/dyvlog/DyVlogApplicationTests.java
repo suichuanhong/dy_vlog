@@ -24,12 +24,9 @@ class DyVlogApplicationTests {
     @Autowired
     private IdUtil idUtil;
 
-    @Resource
-    private MongoTemplate mongoTemplate;
-
     @Test
     void contextLoads() {
-        msgSendUtil.sendMsg("18896122875", "145120");
+        msgSendUtil.sendMsg("10086", "111111");
     }
 
     @Test
@@ -39,37 +36,6 @@ class DyVlogApplicationTests {
             Thread.sleep(10L);
         }
     }
-
-
-    @Autowired
-    private TencentCloudConfig tencentCloudConfig;
-    @Test
-    public void testYml() {
-        System.out.println(tencentCloudConfig);
-    }
-
-    @Test
-    public void testMongoDBInsert() {
-        MessageMO messageMO = new MessageMO();
-        messageMO.setId(11L);
-        messageMO.setFromUserId("111");
-        messageMO.setFromUserNickName("2222");
-        messageMO.setFromUserFace("eee");
-        messageMO.setToUserId("444");
-//        messageMO.setContent("我喜欢赵习帆");
-        messageMO.setType(0);
-        messageMO.setCreate_time(LocalDateTime.now());
-        mongoTemplate.save(messageMO);
-    }
-
-    @Test
-    public void testMongoGetOne() {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("fromUserId").is("111"));
-        MessageMO one = mongoTemplate.findOne(query, MessageMO.class);
-        System.out.println(one);
-    }
-
 
     @Test
     public void test() {

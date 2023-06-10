@@ -146,8 +146,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     }
 
     /**
-     * 评论点赞
-     *
+     * 处理评论点赞
      * @param userId    用户id
      * @param commentId 评论id
      * @return 返回点赞是否成功的code

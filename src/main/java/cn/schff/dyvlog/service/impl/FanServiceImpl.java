@@ -3,6 +3,7 @@ package cn.schff.dyvlog.service.impl;
 import cn.hutool.core.util.BooleanUtil;
 import cn.schff.dyvlog.common.dto.FanDTO;
 import cn.schff.dyvlog.common.dto.FollowDTO;
+import cn.schff.dyvlog.common.exception.UpdateFailException;
 import cn.schff.dyvlog.common.util.IdUtil;
 import cn.schff.dyvlog.common.util.Result;
 import cn.schff.dyvlog.mapper.FanMapper;
@@ -91,7 +92,7 @@ public class FanServiceImpl extends ServiceImpl<FanMapper, Fan> implements FanSe
         // 数据库删除信息
         Integer count = baseMapper.deleteByMyIdAndVlogerId(myId, vlogerId);
         if (count == 0) {
-            return Result.fail("取消关注失败");
+            throw new UpdateFailException("取消关注失败");
         }
         // redis删除关注信息
         String followKey = USERINFO_QUERY_FOLLOW_KEY + myId;
@@ -117,6 +118,7 @@ public class FanServiceImpl extends ServiceImpl<FanMapper, Fan> implements FanSe
     public Result getMyFans(String myId, int page, int pageSize) {
         PageHelper.startPage(page, pageSize);
         List<FanDTO> fans = baseMapper.getFans(myId);
+        // 如果为null直接返回空集合
         if (fans == null) {
             return Result.success(Collections.emptyList());
         }
