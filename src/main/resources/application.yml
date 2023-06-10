@@ -1,0 +1,59 @@
+server:
+  port: 8099
+  tomcat:
+    uri-encoding: UTF-8
+    max-swallow-size: -1
+spring:
+  application:
+    name: dy-vlog
+  datasource:
+    url: jdbc:mysql:///db_dy_vlog
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+  redis:
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 10
+        min-idle: 1
+        time-between-eviction-runs: 10s
+    port: 6379
+    host: 192.168.23.135
+    password: sch520zxf
+  rabbitmq:
+    password: guest
+    username: guest
+    port: 5679
+    host: 192.168.23.135
+  servlet:
+    multipart:
+      max-file-size: 5MB
+  data:
+    mongodb:
+      database: dy_vlog
+      uri: mongodb://admin:root@192.168.23.135:27017
+logging:
+  level:
+    cn.schff.dyvlog: debug
+mybatis-plus:
+  type-aliases-package: cn.schff.dyvlog.pojo
+
+minio:
+  endpoint: http://192.168.23.135:9001
+  accessKey: root
+  secretKey: sch520zxf
+  bucket-name: dyvlog
+  image-size: 1024
+  file-size: 1024
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+tencent:
+  cloud:
+    SecretId: 11111
+    SecretKey: 11111

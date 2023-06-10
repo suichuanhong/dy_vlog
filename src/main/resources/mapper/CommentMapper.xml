@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.schff.dyvlog.mapper.CommentMapper">
+
+    <select id="queryCommentsByVlogId" resultType="cn.schff.dyvlog.common.dto.CommentDTO">
+        SELECT
+            c.id AS commentId,
+            c.comment_user_id AS commentUserId,
+            u.face AS commentUserFace,
+            u.nickname AS commentUserNickname,
+            fu.nickname AS replyedUserNickname,
+            c.create_time AS createTime,
+            c.content AS content,
+            c.like_counts AS likeCounts,
+            u.id as vlogerId,
+            c.father_comment_id AS fatherCommentId,
+            c.vlog_id AS vlogId
+        FROM
+            `comment` c
+                LEFT JOIN `user` u ON c.comment_user_id = u.id
+                LEFT JOIN `comment` fc ON c.father_comment_id = fc.id
+                LEFT JOIN `user` fu ON fc.comment_user_id = fu.id
+        WHERE
+            c.vlog_id = #{vlogId}
+        ORDER BY
+            c.like_counts DESC,
+            c.create_time DESC
+    </select>
+
+</mapper>

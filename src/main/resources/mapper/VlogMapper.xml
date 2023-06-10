@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.schff.dyvlog.mapper.VlogMapper">
+
+    <select id="queryVlogList" resultType="cn.schff.dyvlog.common.dto.VlogDTO">
+        SELECT
+            v.id AS vlogId,
+            v.vloger_id AS vlogerId,
+            u.face AS vlogerFace,
+            u.nickname AS vlogerName,
+            v.title AS content,
+            v.url AS url,
+            v.cover AS cover,
+            v.width AS width,
+            v.height AS height,
+            v.like_counts AS likeCounts,
+            v.comments_counts AS commentsCounts,
+            v.is_private AS isPrivate
+        FROM
+            vlog AS v
+        LEFT JOIN `user` AS u
+            ON v.vloger_id = u.id
+        WHERE
+            v.is_private = 0
+            <if test="search != null and search != ''">
+                and v.title like concat('%', #{search}, '%')
+            </if>
+        ORDER BY
+            v.updated_time DESC
+    </select>
+
+    <select id="queryVlogDetailById" resultType="cn.schff.dyvlog.common.dto.VlogDTO">
+        SELECT
+            v.id AS vlogId,
+            v.vloger_id AS vlogerId,
+            u.face AS vlogerFace,
+            u.nickname AS vlogerName,
+            v.title AS content,
+            v.url AS url,
+            v.cover AS cover,
+            v.width AS width,
+            v.height AS height,
+            v.like_counts AS likeCounts,
+            v.comments_counts AS commentsCounts,
+            v.is_private AS isPrivate
+        FROM
+            vlog AS v
+        LEFT JOIN `user` AS u
+            ON v.vloger_id = u.id
+        WHERE
+            v.id = #{vlogId}
+    </select>
+
+    <select id="queryMyLikeList" resultType="cn.schff.dyvlog.pojo.Vlog">
+        SELECT
+            v.id,
+            v.is_private,
+            v.cover
+        FROM
+            vlog v
+                LEFT JOIN my_liked_vlog l ON v.id = l.vlog_id
+                LEFT JOIN `user` u ON u.id = l.user_id
+        WHERE
+            ( u.id = #{userId} AND v.is_private = 0 )
+           OR (
+                    v.vloger_id = #{userId}
+                AND v.is_private = 1)
+    </select>
+
+    <select id="queryListByIds" resultType="cn.schff.dyvlog.common.dto.VlogDTO">
+        SELECT
+            v.id AS vlogId,
+            v.vloger_id AS vlogerId,
+            u.face AS vlogerFace,
+            u.nickname AS vlogerName,
+            v.title AS content,
+            v.url AS url,
+            v.cover AS cover,
+            v.width AS width,
+            v.height AS height,
+            v.like_counts AS likeCounts,
+            v.comments_counts AS commentsCounts,
+            v.is_private AS isPrivate
+        FROM
+            vlog AS v
+                LEFT JOIN `user` AS u ON v.vloger_id = u.id
+        WHERE
+            v.is_private = 0
+          and v.vloger_id in
+            <foreach collection="ids" open="(" close=")" separator="," item="userId">
+                #{userId}
+            </foreach>
+        ORDER BY
+            v.updated_time DESC
+    </select>
+
+</mapper>

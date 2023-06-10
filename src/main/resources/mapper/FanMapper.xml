@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.schff.dyvlog.mapper.FanMapper">
+
+    <select id="getFollowUsers" resultType="cn.schff.dyvlog.common.dto.FollowDTO">
+        select
+            u.id as vlogerId,
+            u.nickname as nickname,
+            u.face as face
+        from
+            fan f
+        left join
+            user u
+        on
+            u.id = f.vloger_id
+        where
+            f.fan_id = #{myId}
+        order by
+            u.updated_time
+        desc
+    </select>
+
+    <select id="getFans" resultType="cn.schff.dyvlog.common.dto.FanDTO">
+        select
+            f.fan_id as fanId,
+            u.nickname as nickname,
+            u.face as face
+        from
+            fan f
+                left join
+            user u
+            on
+                u.id = f.fan_id
+        where
+            f.vloger_id = #{myId}
+        order by
+            u.updated_time
+        desc
+    </select>
+</mapper>
