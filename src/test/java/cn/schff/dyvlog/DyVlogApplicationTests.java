@@ -2,16 +2,9 @@ package cn.schff.dyvlog;
 
 import cn.schff.dyvlog.common.util.IdUtil;
 import cn.schff.dyvlog.common.util.MsgSendUtil;
-import cn.schff.dyvlog.config.TencentCloudConfig;
-import cn.schff.dyvlog.pojo.MessageMO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
